@@ -1,0 +1,25 @@
+# Credenciales y variables de entorno
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+
+# Entornos virtuales
+.venv/
+venv/
+
+# Archivos temporales de Jupyter
+.ipynb_checkpoints/
+
+# Configuración del editor
+.vscode/
+.idea/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
