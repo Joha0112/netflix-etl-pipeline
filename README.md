@@ -20,19 +20,21 @@ su integridad y los almacene en una base de datos relacional.
 
 ## Arquitectura del pipeline
 
+```text
 CSV de Netflix
-    |
-    v
-Extract: lectura del archivo
-    |
-    v
-Transform: limpieza y normalización
-    |
-    v
-Validate: controles de calidad
-    |
-    v
-Load: almacenamiento en MySQL
+      |
+      v
+EXTRACT - Lectura del archivo CSV
+      |
+      v
+TRANSFORM - Limpieza y normalización
+      |
+      v
+VALIDATE - Controles de calidad
+      |
+      v
+LOAD - Almacenamiento en MySQL
+```
 
 ## Estructura del proyecto
 
@@ -49,7 +51,13 @@ netflix-etl-pipeline/
 │   ├── load.py
 │   ├── database.py
 │   └── main.py
+├── tests/
+│   ├── test_extract.py
+│   ├── test_transform.py
+│   ├── test_validate.py
+│   └── test_pipeline_completo.py
 ├── sql/
+│   └── create_tables.sql
 ├── .env.example
 ├── .gitignore
 ├── requirements.txt
@@ -106,11 +114,31 @@ La carga actual es de tipo inicial: cuando las tablas
 ya contienen registros, el programa omite la inserción.
 No implementa todavía cargas incrementales.
 
+## Pruebas automatizadas
+
+El proyecto incluye **29 pruebas automatizadas**, ejecutadas
+exitosamente con pytest.
+
+Las pruebas verifican:
+
+- Extracción y lectura de datos.
+- Tratamiento de caracteres y codificaciones.
+- Eliminación de registros duplicados.
+- Limpieza y transformación de datos.
+- Normalización de duraciones.
+- Creación y consistencia de tablas relacionales.
+- Validaciones de calidad de datos.
+
+Para ejecutar las pruebas:
+
+```bash
+python -m pytest tests/ -v
+```
+
 ## Próximas mejoras
 
 - Automatización de ejecuciones.
 - Registro de logs.
-- Pruebas automatizadas.
 - Implementación en Microsoft Azure.
 
 
