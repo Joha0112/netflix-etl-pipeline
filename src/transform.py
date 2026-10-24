@@ -1,6 +1,41 @@
 import pandas as pd
 
 
+def limpiar_texto(datos):
+    """
+    Recorta espacios, colapsa espacios repetidos y saltos de linea,
+    y convierte los textos vacios en valores nulos.
+    """
+
+    df = datos.copy()
+
+    for columna in df.columns:
+        if pd.api.types.is_string_dtype(df[columna]):
+            limpio = (
+                df[columna]
+                .str.replace(r"\s+", " ", regex=True)
+                .str.strip()
+            )
+            df[columna] = limpio.replace("", pd.NA)
+
+    return df
+
+
+def eliminar_duplicados(datos):
+    """
+    Elimina filas identicas en todas las columnas salvo show_id
+    (se conserva la primera aparicion).
+    """
+
+    columnas = [c for c in datos.columns if c != "show_id"]
+    repetidos = datos.duplicated(subset=columnas, keep="first")
+    ids_eliminados = datos.loc[repetidos, "show_id"].tolist()
+
+    print("Duplicados eliminados:", len(ids_eliminados), ids_eliminados)
+
+    return datos.loc[~repetidos].reset_index(drop=True)
+
+
 def limpiar_datos_base(datos):
     """
     Realiza la limpieza inicial del dataset Netflix.
@@ -10,6 +45,9 @@ def limpiar_datos_base(datos):
 
     # Eliminar columnas sin información
     df = df.dropna(axis=1, how="all")
+
+    # Normalizar textos (espacios sobrantes, vacios)
+    df = limpiar_texto(df)
 
     # Detectar duraciones ubicadas incorrectamente
     patron = r"^\s*\d+\s*(?:min|Seasons?)\s*$"
@@ -29,6 +67,9 @@ def limpiar_datos_base(datos):
     ]
 
     df.loc[mascara, "rating"] = None
+
+    # Eliminar duplicados (despues de normalizar los textos)
+    df = eliminar_duplicados(df)
 
     print("LIMPIEZA INICIAL COMPLETADA")
     print("Filas:", len(df))

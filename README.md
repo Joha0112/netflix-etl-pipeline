@@ -62,11 +62,11 @@ El pipeline genera tres tablas relacionales:
 
 | Tabla | Registros |
 |---|---:|
-| contenido | 8.809 |
-| contenido_pais | 10.845 |
-| contenido_genero | 19.329 |
+| contenido | 8.805 |
+| contenido_pais | 10.839 |
+| contenido_genero | 19.319 |
 
-Total: 38.983 registros.
+Total: 38.963 registros.
 
 ## Instalación
 

@@ -13,6 +13,11 @@ def validar_datos(contenido, contenido_pais, contenido_genero):
         "Existen identificadores vacíos"
     )
 
+    # Validar que no haya el mismo contenido con distinto show_id
+    assert not contenido.duplicated(
+        subset=["title", "type", "release_year"]
+    ).any(), "Existen contenidos repetidos con distinto show_id"
+
     # Validar relaciones de países
     assert not contenido_pais.duplicated(
         subset=["show_id", "country"]
